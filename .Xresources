@@ -37,9 +37,7 @@ Xft.rgba:               rgb
 *Rxvt*URgentOnBell:     true
 
 ! Copy / Paste keybindings
-*Rxvt*.iso14755: False
-*Rxvt*.clipboard.copycmd:  xsel -i -sel c
-*Rxvt*.clipboard.pastecmd: xsel -o -sel c
+! *Rxvt*.iso14755: False
 
 ! Tango Color Theme urxvt
  urxvt*color0: rgba:1b1b/0808/0202/CCCC
