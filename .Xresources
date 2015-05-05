@@ -1,1 +1,97 @@
-../.Xresources
+*font:                  xft:Anonymous Pro:style=Regular:size=12
+*boldFont:              xft:Anonymous Pro:style=Bold:size=12
+ 
+! Solarized background and foreground
+*background: #002b36
+*foreground: #839496
+
+!Infinality suggested settings
+Xft.antialias:          1
+Xft.autohint:           0
+Xft*dpi:                96
+Xft*hinting:            1
+Xft.hintstyle:          hintfull
+Xft.lcdfilter:          lcddefault
+Xft.rgba:               rgb
+
+*Rxvt*.iconFile:         /usr/share/icons/Adwaita/32x32/apps/utilities-terminal.png
+*Rxvt*internalBorder:   0
+*Rxvt*background:       #002b36
+*Rxvt*foreground:       #839496
+*Rxvt*scrollBar:        false
+*Rxvt*secondaryscroll:  true
+*Rxvt*matcher.button:   1
+*Rxvt*colorBD:          #268bd2
+*Rxvt*colorUL:          #859900
+*Rxvt*cursorBlink:      false
+*Rxvt*cursorColor:      #ffffff
+*Rxvt*transparent:      false
+*Rxvt*shading:          15
+*Rxvt*geometry:         81x26
+*Rxvt*fading:           30
+*Rxvt*allow_bold:       true
+*Rxvt*dynamicColors:    on
+*Rxvt*depth:            24
+*Rxvt*mapAlert:         true
+*Rxvt*visualBell:       false
+*Rxvt*URgentOnBell:     true
+
+! Copy / Paste keybindings
+*Rxvt*.iso14755: False
+*Rxvt*.clipboard.copycmd:  xsel -i -sel c
+*Rxvt*.clipboard.pastecmd: xsel -o -sel c
+
+! Tango Color Theme urxvt
+ urxvt*color0: rgba:1b1b/0808/0202/CCCC
+ urxvt*color1: rgb:cccc/0000/0000
+ urxvt*color2: rgb:4e4e/9a9a/0606
+ urxvt*color3: rgb:c4c4/a0a0/0000
+ urxvt*color4: rgb:3434/6565/a4a4
+ urxvt*color5: rgb:7575/5050/7b7b
+ urxvt*color6: rgb:0606/9820/9a9a
+ urxvt*color7: rgb:d3d3/d7d7/cfcf
+ urxvt*color8: rgb:5555/5757/5353
+ urxvt*color9: rgb:efef/2929/2929
+urxvt*color10: rgb:8a8a/e2e2/3434
+urxvt*color11: rgb:fcfc/e9e9/4f4f
+urxvt*color12: rgb:7272/9f9f/cfcf
+urxvt*color13: rgb:adad/7f7f/a8a8
+urxvt*color14: rgb:3434/e2e2/e2e2
+urxvt*color15: rgb:eeee/eeee/ecec
+
+! Tango Color Theme rxvt
+ rxvt-unicode*color0: rgba:1b1b/0808/0202/CCCC
+ rxvt-unicode*color1: rgb:cccc/0000/0000
+ rxvt-unicode*color2: rgb:4e4e/9a9a/0606
+ rxvt-unicode*color3: rgb:c4c4/a0a0/0000
+ rxvt-unicode*color4: rgb:3434/6565/a4a4
+ rxvt-unicode*color5: rgb:7575/5050/7b7b
+ rxvt-unicode*color6: rgb:0606/9820/9a9a
+ rxvt-unicode*color7: rgb:d3d3/d7d7/cfcf
+ rxvt-unicode*color8: rgb:5555/5757/5353
+ rxvt-unicode*color9: rgb:efef/2929/2929
+rxvt-unicode*color10: rgb:8a8a/e2e2/3434
+rxvt-unicode*color11: rgb:fcfc/e9e9/4f4f
+rxvt-unicode*color12: rgb:7272/9f9f/cfcf
+rxvt-unicode*color13: rgb:adad/7f7f/a8a8
+rxvt-unicode*color14: rgb:3434/e2e2/e2e2
+rxvt-unicode*color15: rgb:eeee/eeee/ecec
+
+
+!Tango Color Theme xterm
+ xterm*color0: rgb:2e2e/3434/3636
+ xterm*color1: rgb:cccc/0000/0000
+ xterm*color2: rgb:4e4e/9a9a/0606
+ xterm*color3: rgb:c4c4/a0a0/0000
+ xterm*color4: rgb:3434/6565/a4a4
+ xterm*color5: rgb:7575/5050/7b7b
+ xterm*color6: rgb:0606/9820/9a9a
+ xterm*color7: rgb:d3d3/d7d7/cfcf
+ xterm*color8: rgb:5555/5757/5353
+ xterm*color9: rgb:efef/2929/2929
+xterm*color10: rgb:8a8a/e2e2/3434
+xterm*color11: rgb:fcfc/e9e9/4f4f
+xterm*color12: rgb:7272/9f9f/cfcf
+xterm*color13: rgb:adad/7f7f/a8a8
+xterm*color14: rgb:3434/e2e2/e2e2
+xterm*color15: rgb:eeee/eeee/ecec

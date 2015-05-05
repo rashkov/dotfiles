@@ -38,12 +38,11 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-beautiful.wallpaper = "/home/mike/Pictures/donut.png"
+beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
+terminal = "xterm"
+editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -52,8 +51,6 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
-
--- keybinding({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end):add()
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -76,8 +73,7 @@ local layouts =
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
-        -- gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.tiled(beautiful.wallpaper, s)
+        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
 end
 -- }}}
