@@ -53,8 +53,6 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
--- keybinding({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end):add()
-
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
@@ -275,7 +273,17 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
+    -- Custom
+    awful.key({ modkey, "Shift",  }, "F2",
+      function ()
+              awful.prompt.run({ prompt = "Rename tab: ", text = awful.tag.selected().name, },
+              mypromptbox[mouse.screen].widget,
+              function (s)
+                  awful.tag.selected().name = s
+              end)
+      end),
+    awful.key({}, "XF86AudioMute", function () awful.util.spawn("ponymix toggle") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -296,6 +304,7 @@ clientkeys = awful.util.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
         end)
+
 )
 
 -- Bind all key numbers to tags.
