@@ -1,8 +1,8 @@
 !Infinality suggested settings
 Xft.antialias:          1
 Xft.autohint:           0
-Xft*dpi:                96
-Xft*hinting:            1
+Xft.dpi:                96
+Xft.hinting:            1
 Xft.hintstyle:          hintfull
 Xft.lcdfilter:          lcddefault
 Xft.rgba:               rgb
@@ -30,8 +30,9 @@ Xft.rgba:               rgb
 *Rxvt*color15: rgb:eeee/eeee/ecec
 
 ! rxvt/urxvt misc
-*Rxvt*font:             xft:Anonymous Pro:style=Regular:size=12
-*Rxvt*boldFont:         xft:Anonymous Pro:style=Bold:size=12
+*Rxvt*font:             xft:Anonymous Pro:style=Regular:size=14
+*Rxvt*boldFont:         xft:Anonymous Pro:style=Bold:size=14
+*Rxvt*lineSpace:        1
 *Rxvt*.iconFile:        /usr/share/icons/Adwaita/32x32/apps/utilities-terminal.png
 *Rxvt*internalBorder:   0
 *Rxvt*scrollBar:        false
@@ -52,4 +53,4 @@ Xft.rgba:               rgb
 *Rxvt*visualBell:       false
 *Rxvt*URgentOnBell:     true
 ! Copy / Paste keybindings
-! *Rxvt*.iso14755: False
+ *Rxvt*.iso14755: False

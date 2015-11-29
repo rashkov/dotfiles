@@ -283,7 +283,8 @@ globalkeys = awful.util.table.join(
                   awful.tag.selected().name = s
               end)
       end),
-    awful.key({}, "XF86AudioMute", function () awful.util.spawn("ponymix toggle") end)
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer sset 'Master',0 Playback 5%-") end),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer sset 'Master',0 Playback 5%+") end)
 )
 
 clientkeys = awful.util.table.join(

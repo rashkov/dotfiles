@@ -1,6 +1,6 @@
 setxkbmap -option caps:hyper &
-redshift &
-xscreensaver -no-splash &
-xrandr --output HDMI1 --mode 1920x1080 --left-of eDP1 --primary &
+#redshift &
+#xscreensaver -no-splash &
+#xrandr --output HDMI1 --mode 1920x1080 --left-of eDP1 --primary &
 xrdb -merge ~/.Xresources
 exec awesome -c ~/.config/awesome/rc.lua
