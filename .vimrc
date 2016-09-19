@@ -16,7 +16,7 @@ set autoindent
 set tabstop=2
 set shiftwidth=2
 set expandtab
-set textwidth=80
+set textwidth=0
 " gqG - force format all text
 
 " Avoids issues with indenting multiple times
@@ -103,6 +103,7 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'AndrewRadev/vim-eco'
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-fugitive'
 
 " Functions to move buffers around between tabs
 function MoveToPrevTab()
@@ -154,7 +155,7 @@ map <C-m> :call MoveToNextTab()<CR><C-w>H
 map <C-n> :call MoveToPrevTab()<CR><C-w>H 
 
 " extended % matching for html tags
-source /usr/share/vim/vim74/macros/matchit.vim
+source /usr/share/vim/vim80/macros/matchit.vim
 
 " Ignore list for ctrlp fuzzy search
 let g:ctrlp_custom_ignore = {
