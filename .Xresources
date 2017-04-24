@@ -1,8 +1,8 @@
 !Infinality suggested settings
 Xft.antialias:          1
 Xft.autohint:           0
-Xft*dpi:                96
-Xft*hinting:            1
+Xft.dpi:                96
+Xft.hinting:            1
 Xft.hintstyle:          hintfull
 Xft.lcdfilter:          lcddefault
 Xft.rgba:               rgb
@@ -51,7 +51,6 @@ Xft.rgba:               rgb
 *Rxvt*mapAlert:         true
 *Rxvt*visualBell:       false
 *Rxvt*URgentOnBell:     true
-! Copy / Paste keybindings
-! *Rxvt*.iso14755: False
 ! Fix cutoff descenders
 *Rxvt*.lineSpace: 1
+*Rxvt*.iso14755: False
