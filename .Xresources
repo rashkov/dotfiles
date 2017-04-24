@@ -30,8 +30,8 @@ Xft.rgba:               rgb
 *Rxvt*color15: rgb:eeee/eeee/ecec
 
 ! rxvt/urxvt misc
-*Rxvt*font:             xft:Anonymous Pro:style=Regular:size=12
-*Rxvt*boldFont:         xft:Anonymous Pro:style=Bold:size=12
+*Rxvt*font:             xft:Anonymous Pro:style=Regular:size=16
+*Rxvt*boldFont:         xft:Anonymous Pro:style=Bold:size=16
 *Rxvt*.iconFile:        /usr/share/icons/Adwaita/32x32/apps/utilities-terminal.png
 *Rxvt*internalBorder:   0
 *Rxvt*scrollBar:        false
@@ -41,7 +41,7 @@ Xft.rgba:               rgb
 *Rxvt*colorUL:          #859900
 *Rxvt*cursorBlink:      false
 *Rxvt*cursorColor:      #ffffff
-*Rxvt*transparent:      false
+*Rxvt*transparent:      true
 *Rxvt*shading:          15
 *Rxvt*geometry:         81x26
 *Rxvt*fading:           30
@@ -53,3 +53,5 @@ Xft.rgba:               rgb
 *Rxvt*URgentOnBell:     true
 ! Copy / Paste keybindings
 ! *Rxvt*.iso14755: False
+! Fix cutoff descenders
+*Rxvt*.lineSpace: 1
