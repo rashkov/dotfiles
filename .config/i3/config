@@ -187,8 +187,8 @@ assign [class="Emacs"] 2
 #bindsym XF86AudioMute exec amixer sset Master toggle && killall -USR1 i3blocks
 #bindsym $mod+Control+Shift+Up exec xbacklight -set $(echo `xbacklight -get`+20|bc)
 #bindsym $mod+Control+Shift+Down exec xbacklight -set $(echo `xbacklight -get`-5|bc)
-bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 10%+
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 10%-
+bindsym XF86AudioMute exec --no-startup-id ponymix -d1 -t sink toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id ponymix -d1 -t sink increase 10
+bindsym XF86AudioLowerVolume exec --no-startup-id  ponymix -d1 -t sink decrease 10
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10%
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10%
