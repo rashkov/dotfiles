@@ -34,6 +34,13 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     (typescript :variables
+                 typescript-indent-level 2
+                 typescript-fmt-tool 'prettier
+                 typescript-fmt-on-save t
+                 node-add-modules-path t)
+     python
+     haskell
      (go :variables go-tab-width 2)
      yaml
      ;; ----------------------------------------------------------------
@@ -42,17 +49,17 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; auto-completion
+     auto-completion
      better-defaults
      emacs-lisp
      git
-     markdown
+     (markdown :variables markdown-live-preview-engine 'vmd)
      neotree
      org
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     spell-checking
+     ;; spell-checking
      syntax-checking
      version-control
      javascript
@@ -65,6 +72,7 @@ This function should only modify configuration layer settings."
      ;; multiple-cursors
      ;; treemacs
      asciidoc
+     reasonml
      )
 
    ;; List of additional packages that will be installed without being
@@ -206,8 +214,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes '(spacemacs-light
+                         spacemacs-dark)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -225,7 +233,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Anonymous Pro"
-                               :size 23
+                               :size 25
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -516,7 +524,7 @@ before packages are loaded."
     (visual-line-mode)
   ))
 
-  (spacemacs/load-theme 'inverse-acme)
+  ;; (spacemacs/load-theme 'inverse-acme)
 
   "Toggle images in eww"
   (defvar-local endless/display-images t)
@@ -549,6 +557,49 @@ before packages are loaded."
                           (point-max)))
             (when (eq (car prop) 'image)
               (add-text-properties left pos (list from nil to prop) object))))))
+
+    ;; Ocaml stuff -- snippets come from when I installed tuareg and caml-mode via opam
+    ;; (load "/home/mike/.opam/4.02.3+buckle-master/share/emacs/site-lisp/tuareg-site-file")
+    ;; (add-to-list 'load-path "/home/mike/.opam/4.02.3+buckle-master/share/emacs/site-lisp/")
+
+
+    ;; (defun shell-cmd (cmd)
+    ;;   "Returns the stdout output of a shell command or nil if the command returned
+    ;;   an error"
+    ;;   (car (ignore-errors (apply 'process-lines (split-string cmd)))))
+
+    ;; (defun reason-cmd-where (cmd)
+    ;;   (let ((where (shell-cmd cmd)))
+    ;;     (if (not (string-equal "unknown flag ----where" where))
+    ;;       where)))
+
+    ;; (let* ((refmt-bin (or (reason-cmd-where "refmt ----where")
+    ;;                       (shell-cmd "which refmt")
+    ;;                       (shell-cmd "which bsrefmt")))
+    ;;       (merlin-bin (or (reason-cmd-where "ocamlmerlin ----where")
+    ;;                       (shell-cmd "which ocamlmerlin")))
+    ;;       (merlin-base-dir (when merlin-bin
+    ;;                           (replace-regexp-in-string "bin/ocamlmerlin$" "" merlin-bin))))
+    ;;   ;; Add merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
+    ;;   (when merlin-bin
+    ;;     (add-to-list 'load-path (concat merlin-base-dir "share/emacs/site-lisp/"))
+    ;;     (setq merlin-command merlin-bin))
+
+    ;;   (when refmt-bin
+    ;;     (setq refmt-command refmt-bin))
+    ;;   )
+
+    ;; (require 'reason-mode)
+    ;; (require 'merlin)
+    ;; (add-hook 'reason-mode-hook (lambda ()
+    ;;                               ;; (add-hook 'before-save-hook 'refmt-before-save)
+    ;;                               (merlin-mode)))
+
+    ;; (setq merlin-ac-setup t)
+    (add-hook 'reason-mode-hook (lambda ()
+                                  (spacemacs/toggle-reason-auto-refmt-on)
+                                  (set-fill-column 100)
+                                  (customize-set-variable 'refmt-width-mode 'fill)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -563,10 +614,19 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("39546362fed4d5201b2b386dc21f21439497c9eec5fee323d953b3e230e4083e" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(org-agenda-files
+   (quote
+    ("/home/mike/.deft/spec_source_code.org" "/home/mike/.deft/backtrace.org" "/home/mike/.deft/backtrace2.org" "/home/mike/.deft/notes.org" "/home/mike/.deft/personal.org" "/home/mike/.deft/spec_src_code_2.org")))
+ '(org-default-notes-file "/home/mike/.deft/notes.org")
  '(package-selected-packages
    (quote
-    (adoc-mode markup-faces esxml nov cider-eval-sexp-fu queue clojure-mode writeroom-mode visual-fill-column yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tern tagedit symon string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode restart-emacs rbenv rake rainbow-delimiters pug-mode prettier-js popwin persp-mode password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-coffeescript neotree nameless mwim multi-term move-text mmm-mode minitest markdown-toc magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc inverse-acme-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl deft define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line)))
+    (vmd-mode tide typescript-mode import-js grizzl add-node-modules-path yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui treemacs pfuture cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-go company clojure-snippets auto-yasnippet ac-ispell auto-complete utop tuareg caml reason-mode ocp-indent flycheck-ocaml merlin dune adoc-mode markup-faces esxml nov cider-eval-sexp-fu queue clojure-mode writeroom-mode visual-fill-column yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tern tagedit symon string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode restart-emacs rbenv rake rainbow-delimiters pug-mode prettier-js popwin persp-mode password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-coffeescript neotree nameless mwim multi-term move-text mmm-mode minitest markdown-toc magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc inverse-acme-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl deft define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line)))
+ '(refmt-command
+   "/home/mike/bs-backtrace-frontend/node_modules/bs-platform/lib/bsrefmt")
  '(safe-local-variable-values
    (quote
     ((mods . emacs-lisp)
