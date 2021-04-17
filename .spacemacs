@@ -76,12 +76,13 @@ This function should only modify configuration layer settings."
      reasonml
      )
 
-   ;; List of additional packages that will be installed without being
-   ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
-   ;; configuration in `dotspacemacs/user-config'.
-   ;; To use a local version of a package, use the `:location' property:
-   ;; '(your-package :location "~/path/to/your-package/")
+   ;; List of additional packages that will be installed without being wrapped
+   ;; in a layer (generally the packages are installed only and should still be
+   ;; loaded using load/require/use-package in the user-config section below in
+   ;; this file). If you need some configuration for these packages, then
+   ;; consider creating a layer. You can also put the configuration in
+   ;; `dotspacemacs/user-config'. To use a local version of a package, use the
+   ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
                                       eww
@@ -129,7 +130,7 @@ It should only modify the values of Spacemacs settings."
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
    ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
-   ;; (default spacemacs-27.1.pdmp)
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
@@ -159,8 +160,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
-   ;; latest version of packages from MELPA. (default nil)
-   dotspacemacs-use-spacelpa nil
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
+   dotspacemacs-use-spacelpa t
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
    ;; (default t)
@@ -201,14 +204,21 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive nil
+
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
@@ -217,6 +227,14 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
+
+   ;; If non-nil, *scratch* buffer will be persistent. Things you write down in
+   ;; *scratch* buffer will be saved and restored automatically.
+   dotspacemacs-scratch-buffer-persistent nil
+
+   ;; If non-nil, `kill-buffer' on *scratch* buffer
+   ;; will bury it instead of killing.
+   dotspacemacs-scratch-buffer-unkillable nil
 
    ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
    ;; (default nil)
@@ -241,13 +259,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
-   ;; quickly tweak the mode-line size to make separators look not too crappy.
+   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Anonymous Pro"
                                :size 25
                                :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
+                               :width normal)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -381,6 +399,10 @@ It should only modify the values of Spacemacs settings."
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
 
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
+
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
@@ -401,13 +423,18 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-line-numbers nil
 
-   ;; Code folding method. Possible values are `evil' and `origami'.
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
 
-   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -455,12 +482,18 @@ It should only modify the values of Spacemacs settings."
    ;; %n - Narrow if appropriate
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
+   ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+   ;; performance issues, instead of calculating the frame title by
+   ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
    dotspacemacs-frame-title-format "%t/%b"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
+
+   ;; Show trailing whitespace (default t)
+   dotspacemacs-show-trailing-whitespace t
 
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
@@ -477,8 +510,8 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-use-clean-aindent-mode t
 
    ;; If non-nil shift your number row to match the entered keyboard layout
-   ;; (only in insert mode). Currently the keyboard layouts
-   ;; (qwerty-us qwertz-de) are supported.
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
    ;; New layouts can be added in `spacemacs-editing' layer.
    ;; (default nil)
    dotspacemacs-swap-number-row nil
@@ -494,7 +527,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
-   dotspacemacs-home-shorten-agenda-source nil))
+   dotspacemacs-home-shorten-agenda-source nil
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -509,164 +545,23 @@ See the header of this file for more information."
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first."
+If you are unsure, try setting them in `dotspacemacs/user-config' first.")
 
-  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump."
-  )
+dump.")
+
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
-before packages are loaded."
-  (spacemacs/toggle-golden-ratio-on)
-  ;; (setq projectile-use-git-grep 1)
-  (setq-default js2-basic-offset 2)
-  (setq-default js-indent-level 2)
+before packages are loaded.")
 
-  (setq gofmt-command "goimports")
-
-  (add-hook 'web-mode-hook (lambda () (progn
-                                        (setq web-mode-markup-indent-offset 2)
-                                        (setq web-mode-css-indent-offset 2)
-                                        (setq web-mode-code-indent-offset 2)
-                                        (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
-                                        (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
-                                        (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
-                                        (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil))
-                                        )))
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-
-  (setq backup-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
-  (setq create-lockfiles nil)
-
-  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
-  (add-hook 'org-mode-hook (lambda ()
-    (define-key evil-insert-state-map (kbd "<M-return>") 'org-insert-subheading)
-    (visual-line-mode)
-  ))
-
-  ;; (spacemacs/load-theme 'inverse-acme)
-
-  "Toggle images in eww"
-  (defvar-local endless/display-images t)
-  (defun eww/eww-toggle-image-display ()
-    "Toggle images display on current buffer."
-    (interactive)
-    (setq endless/display-images
-          (null endless/display-images))
-    (endless/backup-display-property endless/display-images))
-    (defun endless/backup-display-property (invert &optional object)
-    "Move the 'display property at POS to 'display-backup.
-     Only applies if display property is an image.
-     If INVERT is non-nil, move from 'display-backup to 'display
-     instead.
-     Optional OBJECT specifies the string or buffer. Nil means current
-     buffer."
-      (let* ((inhibit-read-only t)
-            (from (if invert 'display-backup 'display))
-            (to (if invert 'display 'display-backup))
-            (pos (point-min))
-            left prop)
-        (while (and pos (/= pos (point-max)))
-          (if (get-text-property pos from object)
-              (setq left pos)
-            (setq left (next-single-property-change pos from object)))
-          (if (or (null left) (= left (point-max)))
-              (setq pos nil)
-            (setq prop (get-text-property left from object))
-            (setq pos (or (next-single-property-change left from object)
-                          (point-max)))
-            (when (eq (car prop) 'image)
-              (add-text-properties left pos (list from nil to prop) object))))))
-
-    ;; Ocaml stuff -- snippets come from when I installed tuareg and caml-mode via opam
-    ;; (load "/home/mike/.opam/4.02.3+buckle-master/share/emacs/site-lisp/tuareg-site-file")
-    ;; (add-to-list 'load-path "/home/mike/.opam/4.02.3+buckle-master/share/emacs/site-lisp/")
-
-
-    ;; (defun shell-cmd (cmd)
-    ;;   "Returns the stdout output of a shell command or nil if the command returned
-    ;;   an error"
-    ;;   (car (ignore-errors (apply 'process-lines (split-string cmd)))))
-
-    ;; (defun reason-cmd-where (cmd)
-    ;;   (let ((where (shell-cmd cmd)))
-    ;;     (if (not (string-equal "unknown flag ----where" where))
-    ;;       where)))
-
-    ;; (let* ((refmt-bin (or (reason-cmd-where "refmt ----where")
-    ;;                       (shell-cmd "which refmt")
-    ;;                       (shell-cmd "which bsrefmt")))
-    ;;       (merlin-bin (or (reason-cmd-where "ocamlmerlin ----where")
-    ;;                       (shell-cmd "which ocamlmerlin")))
-    ;;       (merlin-base-dir (when merlin-bin
-    ;;                           (replace-regexp-in-string "bin/ocamlmerlin$" "" merlin-bin))))
-    ;;   ;; Add merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
-    ;;   (when merlin-bin
-    ;;     (add-to-list 'load-path (concat merlin-base-dir "share/emacs/site-lisp/"))
-    ;;     (setq merlin-command merlin-bin))
-
-    ;;   (when refmt-bin
-    ;;     (setq refmt-command refmt-bin))
-    ;;   )
-
-    ;; (require 'reason-mode)
-    ;; (require 'merlin)
-    ;; (add-hook 'reason-mode-hook (lambda ()
-    ;;                               ;; (add-hook 'before-save-hook 'refmt-before-save)
-    ;;                               (merlin-mode)))
-
-    ;; (setq merlin-ac-setup t)
-    (add-hook 'reason-mode-hook (lambda ()
-                                  (spacemacs/toggle-reason-auto-refmt-on)
-                                  (set-fill-column 100)
-                                  (customize-set-variable 'refmt-width-mode 'fill)))
-  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("39546362fed4d5201b2b386dc21f21439497c9eec5fee323d953b3e230e4083e" default))
- '(evil-want-Y-yank-to-eol nil)
- '(org-agenda-files
-   '("/home/mike/.deft/spec_source_code.org" "/home/mike/.deft/backtrace.org" "/home/mike/.deft/backtrace2.org" "/home/mike/.deft/notes.org" "/home/mike/.deft/personal.org" "/home/mike/.deft/spec_src_code_2.org"))
- '(org-default-notes-file "/home/mike/.deft/notes.org")
- '(package-selected-packages
-   '(merlin-iedit cfrs lsp-ui lsp-pyright lsp-origami origami helm-lsp posframe dante lcr company-ycmd company-rtags company-cabal company-c-headers ccls attrap helm-rtags google-c-style flycheck-ycmd ycmd request-deferred flycheck-rtags rtags disaster cpp-auto-include vmd-mode tide typescript-mode import-js grizzl add-node-modules-path yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui treemacs pfuture cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-go company clojure-snippets auto-yasnippet ac-ispell auto-complete utop tuareg caml reason-mode ocp-indent flycheck-ocaml merlin dune adoc-mode markup-faces esxml nov cider-eval-sexp-fu queue clojure-mode writeroom-mode visual-fill-column yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tern tagedit symon string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode restart-emacs rbenv rake rainbow-delimiters pug-mode prettier-js popwin persp-mode password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-coffeescript neotree nameless mwim multi-term move-text mmm-mode minitest markdown-toc magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc inverse-acme-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl deft define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line))
- '(paradox-github-token t)
- '(refmt-command
-   "/home/mike/bs-backtrace-frontend/node_modules/bs-platform/lib/bsrefmt")
- '(safe-local-variable-values
-   '((mods . emacs-lisp)
-     (javascript-backend . tern)
-     (javascript-backend . lsp)
-     (go-backend . go-mode)
-     (go-backend . lsp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
