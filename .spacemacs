@@ -33,6 +33,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     lsp
      (typescript :variables
                  typescript-indent-level 2
                  typescript-fmt-tool 'prettier
@@ -48,7 +49,7 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     ;; auto-completion
      better-defaults
      emacs-lisp
      git
@@ -68,6 +69,7 @@ This function should only modify configuration layer settings."
      react
      coffeescript
      clojure
+     (c-c++ :variables c-c++-enable-clang-support t)
      ;; multiple-cursors
      ;; treemacs
      asciidoc
@@ -85,6 +87,7 @@ This function should only modify configuration layer settings."
                                       eww
                                       prettier-js
                                       inverse-acme-theme
+                                      merlin-iedit
                                       )
 
    ;; A list of packages that cannot be updated.
@@ -152,7 +155,7 @@ It should only modify the values of Spacemacs settings."
    ;; Setting this >= 1 MB should increase performance for lsp servers
    ;; in emacs 27.
    ;; (default (* 1024 1024))
-   dotspacemacs-read-process-output-max (* 1024 1024)
+   dotspacemacs-read-process-output-max (* 1024 1024 100)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -473,14 +476,12 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
 
-   ;; If non-nil activate `snoopy-mode' which shifts your number row
-   ;; to match the set of signs given in `dotspacemacs-snoopy-keyrow'
-   ;; in programming modes (insert-mode only). (default nil)
-   dotspacemacs-use-snoopy-mode nil
-
-   ;; Text of shifted values from your
-   ;; keyboard's number row. (default '!@#$%^&*()')
-   dotspacemacs-snoopy-keyrow "!@#$%^&*()"
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert mode). Currently the keyboard layouts
+   ;; (qwerty-us qwertz-de) are supported.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
@@ -509,6 +510,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
   )
 
 (defun dotspacemacs/user-load ()
@@ -645,25 +647,22 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("39546362fed4d5201b2b386dc21f21439497c9eec5fee323d953b3e230e4083e" default)))
+   '("39546362fed4d5201b2b386dc21f21439497c9eec5fee323d953b3e230e4083e" default))
  '(evil-want-Y-yank-to-eol nil)
  '(org-agenda-files
-   (quote
-    ("/home/mike/.deft/spec_source_code.org" "/home/mike/.deft/backtrace.org" "/home/mike/.deft/backtrace2.org" "/home/mike/.deft/notes.org" "/home/mike/.deft/personal.org" "/home/mike/.deft/spec_src_code_2.org")))
+   '("/home/mike/.deft/spec_source_code.org" "/home/mike/.deft/backtrace.org" "/home/mike/.deft/backtrace2.org" "/home/mike/.deft/notes.org" "/home/mike/.deft/personal.org" "/home/mike/.deft/spec_src_code_2.org"))
  '(org-default-notes-file "/home/mike/.deft/notes.org")
  '(package-selected-packages
-   (quote
-    (vmd-mode tide typescript-mode import-js grizzl add-node-modules-path yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui treemacs pfuture cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-go company clojure-snippets auto-yasnippet ac-ispell auto-complete utop tuareg caml reason-mode ocp-indent flycheck-ocaml merlin dune adoc-mode markup-faces esxml nov cider-eval-sexp-fu queue clojure-mode writeroom-mode visual-fill-column yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tern tagedit symon string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode restart-emacs rbenv rake rainbow-delimiters pug-mode prettier-js popwin persp-mode password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-coffeescript neotree nameless mwim multi-term move-text mmm-mode minitest markdown-toc magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc inverse-acme-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl deft define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line)))
+   '(merlin-iedit cfrs lsp-ui lsp-pyright lsp-origami origami helm-lsp posframe dante lcr company-ycmd company-rtags company-cabal company-c-headers ccls attrap helm-rtags google-c-style flycheck-ycmd ycmd request-deferred flycheck-rtags rtags disaster cpp-auto-include vmd-mode tide typescript-mode import-js grizzl add-node-modules-path yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui treemacs pfuture cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-go company clojure-snippets auto-yasnippet ac-ispell auto-complete utop tuareg caml reason-mode ocp-indent flycheck-ocaml merlin dune adoc-mode markup-faces esxml nov cider-eval-sexp-fu queue clojure-mode writeroom-mode visual-fill-column yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tern tagedit symon string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode restart-emacs rbenv rake rainbow-delimiters pug-mode prettier-js popwin persp-mode password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-coffeescript neotree nameless mwim multi-term move-text mmm-mode minitest markdown-toc magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc inverse-acme-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl deft define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line))
+ '(paradox-github-token t)
  '(refmt-command
    "/home/mike/bs-backtrace-frontend/node_modules/bs-platform/lib/bsrefmt")
  '(safe-local-variable-values
-   (quote
-    ((mods . emacs-lisp)
+   '((mods . emacs-lisp)
      (javascript-backend . tern)
      (javascript-backend . lsp)
      (go-backend . go-mode)
-     (go-backend . lsp)))))
+     (go-backend . lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
